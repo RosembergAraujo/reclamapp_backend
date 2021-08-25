@@ -3,8 +3,9 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const crypto = require('crypto')
 const router = express.Router()
-
+const mailer = require('../modules/mailer')
 
 
 const generateToken = (param = {}) => {
@@ -51,6 +52,77 @@ router.post('/authenticate', async (req, res) => {
         user, 
         token: generateToken({ id: user.id }) 
     })
+})
+
+router.post('/forgot_password', async (req, res) => {
+    const { email } = req.body
+
+    try {
+        
+        const user = await User.findOne({ email })
+
+        if (!user) 
+            return res.status(400).send({ error: 'User not found' })
+
+        const token = crypto.randomBytes(20).toString('hex')
+
+        const now = new Date()
+        now.setHours(now.getHours() + 1)
+
+        await User.findByIdAndUpdate(user.id, {
+            '$set': {
+                passwordResetToken: token,
+                passwordResetExpires: now
+            }
+        })
+
+
+        mailer.sendMail({
+            to: email,
+            from: 'bergaoDoPiggas@gmail.com',
+            template: 'auth/forgot',
+            context: { token }
+        }), (err) => {
+            if(err) 
+                return res.status(400).send({ error: 'Cannot send email' })
+
+            return res.send() //CASE YOU LIKE TO SEND A MESSAGE TO USER, WILL BE HERE
+        }
+
+    } catch (error) {
+        res.status(400).send({ erro: 'Error on forgot password' })
+    }
+})
+
+router.post('/reset_password', async (req, res) => {
+    const { email, token, password } = req.body
+    try {
+
+        const now = new Date()
+
+        const user = await User.findOne({ email })
+            .select('+passwordResetToken passwordResetExpires')
+
+        if (!user) 
+            return res.status(400).send({ error: 'User not found' })
+
+        if (token !== user.passwordResetToken)
+            return res.status(400).send({ error: 'Invalid Token' })
+        
+
+        if(now > user.passwordResetExpires)
+            return res.status(400).send({ error: 'Expired Token' })
+
+        user.password = password
+
+        await user.save()
+
+        res.send()
+
+    } catch (error) {
+        if(err) 
+            return res.status(400).send({ error: 'Cannot reset password' })
+    }
 })
 
 

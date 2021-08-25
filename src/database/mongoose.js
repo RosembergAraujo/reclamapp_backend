@@ -9,7 +9,8 @@ const URI = `mongodb+srv://Mongo:${process.env.DB_PASS}@cluster0.rcaim.mongodb.n
 mongoose.connect(URI, { 
     useNewUrlParser: true, 
     useUnifiedTopology: true, 
-    useCreateIndex: true 
+    useCreateIndex: true,
+    useFindAndModify: false
 })
 
 mongoose.Promise = global.Promise

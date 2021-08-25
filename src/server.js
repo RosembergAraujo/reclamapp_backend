@@ -1,4 +1,4 @@
-require('dotenv/config')
+// require('dotenv/config')
 const express = require('express');
 const app = express();
  
@@ -8,8 +8,7 @@ app.get('/', (req, res) => {
     res.send('FDS')
 })
 
-require('./app/controllers/authController')(app)
-require('./app/controllers/projectController')(app)
+require('./app/controllers/index')(app)
 
 
 app.listen(process.env.PORT);
