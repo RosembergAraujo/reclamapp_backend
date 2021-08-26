@@ -2,6 +2,9 @@ require('dotenv/config')
 const express = require('express');
 const app = express();
  
+
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -11,4 +14,4 @@ app.get('/', (req, res) => {
 require('./app/controllers/index')(app)
 
 
-module.exports= app
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
