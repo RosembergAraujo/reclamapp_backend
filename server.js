@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
     res.send('FDS')
 })
 
-require('./app/controllers/index')(app)
+require('./src/app/controllers/index')(app)
 
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
