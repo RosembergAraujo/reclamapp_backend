@@ -11,4 +11,4 @@ app.get('/', (req, res) => {
 require('./app/controllers/index')(app)
 
 
-app.listen(process.env.PORT);
+module.exports= app
