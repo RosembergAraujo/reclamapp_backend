@@ -5,7 +5,6 @@ const databaseName = 'React-Native'
 
 const URI = `mongodb+srv://Mongo:${process.env.DB_PASS}@cluster0.rcaim.mongodb.net/${databaseName}?retryWrites=true&w=majority`
 
-
 mongoose.connect(URI, { 
     useNewUrlParser: true, 
     useUnifiedTopology: true, 
@@ -14,7 +13,6 @@ mongoose.connect(URI, {
 })
 
 mongoose.Promise = global.Promise
-
 
 module.exports = mongoose
 
