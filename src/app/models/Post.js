@@ -1,6 +1,6 @@
 const mongoose = require('../../database/mongoose')
 
-const ProjectSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
     
     title: {
         type: String,
@@ -15,9 +15,9 @@ const ProjectSchema = new mongoose.Schema({
         ref: 'Users',
         require: true
     },
-    tasks: [{
+    attachments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tasks'
+        ref: 'Attachments'
     }],
     createdAt: {
         type: Date,
@@ -25,6 +25,6 @@ const ProjectSchema = new mongoose.Schema({
     }
 })
 
-const Project = mongoose.model('Projects', ProjectSchema)
+const Post = mongoose.model('Posts', PostSchema)
 
-module.exports = Project;
+module.exports = Post;

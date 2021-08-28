@@ -1,25 +1,24 @@
 const mongoose = require('../../database/mongoose')
 
-const TaskSchema = new mongoose.Schema({
+const AttachmentSchema = new mongoose.Schema({
     
     title: {
         type: String,
         require: true
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Projects',
+    url: {
+        type: String,
         require: true
     },
-    assignedTo: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
         require: true
     },
-    completed: {
-        type: Boolean,
-        require: true,
-        default: false
+    assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Posts',
+        require: true
     },
     createdAt: {
         type: Date,
@@ -27,6 +26,6 @@ const TaskSchema = new mongoose.Schema({
     }
 })
 
-const Task = mongoose.model('Tasks', TaskSchema)
+const Attachment = mongoose.model('Attachments', AttachmentSchema)
 
-module.exports = Task;
+module.exports = Attachment;

@@ -17,8 +17,8 @@ const generateToken = (param = {}) => {
 router.post('/register', async (req, res) => {
     const { email } = req.body
     try{
-
-        if(await User.findOne({ email })){ return res.status(400).send({error: 'User already exists'}) }
+        if(await User.findOne({ email }))
+            return res.status(400).send({error: 'User already exists'})
 
         const user = await User.create(req.body)
 
@@ -38,10 +38,10 @@ router.post('/register', async (req, res) => {
 router.post('/authenticate', async (req, res) => {
     const { email, password } = req.body
 
-
     const user = await User.findOne({ email }).select('+password')
 
-    if (!user) return res.status(400).send({ error: 'User not found' })
+    if (!user) 
+        return res.status(400).send({ error: 'User not found' })
 
     if(!await bcrypt.compare(password, user.password)) 
         return res.status(400).send({ error: 'Wrong password' })
@@ -76,7 +76,6 @@ router.post('/forgot_password', async (req, res) => {
             }
         })
 
-
         mailer.sendMail({
             to: email,
             from: 'bergaoDoPiggas@gmail.com',
@@ -86,9 +85,9 @@ router.post('/forgot_password', async (req, res) => {
             if(err) 
                 return res.status(400).send({ error: 'Cannot send email' })
 
-            return res.send() //CASE YOU LIKE TO SEND A MESSAGE TO USER, WILL BE HERE
         }
-
+            
+        return res.send() //CASE YOU LIKE TO SEND A MESSAGE TO USER, WILL BE HERE
     } catch (error) {
         res.status(400).send({ erro: 'Error on forgot password' })
     }
@@ -114,6 +113,7 @@ router.post('/reset_password', async (req, res) => {
             return res.status(400).send({ error: 'Expired Token' })
 
         user.password = password
+        user.passwordResetToken = crypto.randomBytes(20).toString('hex')
 
         await user.save()
 
