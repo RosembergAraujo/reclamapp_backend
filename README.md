@@ -4,4 +4,6 @@ API REST WITH MONGO DB
 
 Example usage video:
 
-https://drive.google.com/file/d/1LtE05qv05qfl5XpFVTtCxNLNarYsZLFj/view?usp=sharing
+
+https://user-images.githubusercontent.com/70284263/131215457-ed964290-896b-4ce4-bf92-4869c49570ef.mp4
+
