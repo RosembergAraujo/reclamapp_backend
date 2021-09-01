@@ -93,11 +93,46 @@ router.put('/:postId', async (req, res) => {
 
 router.delete('/:postId', async (req, res) => {
     try {
-        await Project.findByIdAndRemove(req.params.postId)
-        return res.send()
+        const post = await Post.findById(req.params.postId)
+        
+        if(post.user !== req.userId) {
+            return res.status(400).send({ error: 'Error, you are not owner of this post' })
+        }else {
+            await Promise.all(post.attachments.map(async attachmentId => {
+                await Attachment.findByIdAndRemove(attachmentId)
+            }))
+        
+            await Post.findByIdAndRemove(req.params.postId)
+
+            return res.send()
+        }
     } catch (error) {
         console.log(error);
         return res.status(400).send({ error: 'Error, cant delete this post' })
+    }
+})
+
+router.put('/like/:postId', async (req, res) => {
+    try {
+
+        const post = await Post.findById(req.params.postId)
+        
+        const userId = req.userId
+        
+        const likeFound = post.likes.filter(likes => likes.toString() === req.userId )
+        
+        if(likeFound.length === 0) { //User hasn't liked yet
+            post.likes.push(req.userId)
+        }else {
+            post.likes = post.likes.filter(likes => likes != userId)
+        }
+
+        await post.save()
+
+        res.send({ post })
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send({ error: 'Project update fail' })
     }
 })
 

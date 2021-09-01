@@ -15,6 +15,10 @@ const PostSchema = new mongoose.Schema({
         ref: 'Users',
         require: true
     },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users',
+    }],
     attachments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Attachments'
