@@ -95,7 +95,7 @@ router.delete('/:postId', async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId)
         
-        if(post.user !== req.userId) {
+        if(post.user.toString() !== req.userId) {
             return res.status(400).send({ error: 'Error, you are not owner of this post' })
         }else {
             await Promise.all(post.attachments.map(async attachmentId => {
