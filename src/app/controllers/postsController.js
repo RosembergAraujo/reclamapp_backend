@@ -14,7 +14,10 @@ router.use(authMiddleware)
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find().populate(['user', 'attachments'])
-        res.send({ posts })
+        if(posts.length > 0) 
+            res.send({ posts })
+        else 
+            res.status(404).send({ error: 'There is no posts yet' })
     } catch (error) {
         console.log(error);
         return res.status(400).send({ error: 'Error loading posts' })
@@ -24,7 +27,13 @@ router.get('/', async (req, res) => {
 router.get('/:postId', async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId).populate(['user', 'attachments'])
-        res.send({ post })
+        
+        if(post !== null) 
+            res.send({ post })
+        else 
+            res.status(404).send({ error: 'Cant find this post' })
+
+        
     } catch (error) {
         console.log(error);
         return res.status(400).send({ error: 'Error loading post' })
@@ -95,9 +104,9 @@ router.delete('/:postId', async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId)
         
-        if(post.user.toString() !== req.userId) {
+        if(post.user.toString() !== req.userId)
             return res.status(400).send({ error: 'Error, you are not owner of this post' })
-        }else {
+        else {
             await Promise.all(post.attachments.map(async attachmentId => {
                 await Attachment.findByIdAndRemove(attachmentId)
             }))
