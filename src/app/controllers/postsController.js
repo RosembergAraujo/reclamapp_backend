@@ -145,4 +145,4 @@ router.put('/like/:postId', async (req, res) => {
     }
 })
 
-module.exports = app => app.use('/posts', router)
+module.exports = app => app.use('/post', router)

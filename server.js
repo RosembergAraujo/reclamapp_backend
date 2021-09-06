@@ -1,17 +1,15 @@
 require('dotenv/config')
-const express = require('express');
-const app = express();
- 
+const express = require('express')
+const morgan = require('morgan')
+const app = express()
 
-const PORT = process.env.PORT || 3000;
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(morgan('dev'))
 
-app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.send('FDS')
-})
-
+/* ROUTES */
 require('./src/app/controllers/index')(app)
 
-
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Listen on ${process.env.PORT}`)
+})
