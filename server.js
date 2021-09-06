@@ -12,7 +12,7 @@ require('./src/app/controllers/index')(app)
 
 
 app.get('/', async(req,res)=> {
-    res.sendFile('./splash.png')
+    res.sendFile('./splash.png', { root: __dirname })
 })
 
 app.listen(process.env.PORT || 3000, () => {
