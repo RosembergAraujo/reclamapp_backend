@@ -130,7 +130,7 @@ router.put('/like/:postId', async (req, res) => {
         
         const likeFound = post.likes.filter(likes => likes.toString() === req.userId )
         
-        if(likeFound.length === 0) { //User hasn't liked yet
+        if(likeFound.length === 0) { //User hasn't liked this post yet
             post.likes.push(req.userId)
         }else {
             post.likes = post.likes.filter(likes => likes != userId)
