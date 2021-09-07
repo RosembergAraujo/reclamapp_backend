@@ -15,7 +15,7 @@ const AttachmentSchema = new mongoose.Schema({
         ref: 'Users',
         require: true
     },
-    assignedTo: {
+    post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Posts',
         require: true
