@@ -43,9 +43,9 @@ router.get('/:postId', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
 
-        const { tittle, description, attachments } = req.body
+        const { tittle, description, attachments, address } = req.body
 
-        const post = await Post.create({ tittle, description, user: req.userId })
+        const post = await Post.create({ tittle, description, address, user: req.userId })
         
         await Promise.all(attachments.map(async attachment => {
             const postAttachment = new Attachment({ 

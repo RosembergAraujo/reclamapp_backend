@@ -15,6 +15,16 @@ const PostSchema = new mongoose.Schema({
         ref: 'Users',
         require: true
     },
+    address: {
+        latitude: {
+            type: mongoose.Schema.Types.Number,
+            require: false
+        },
+        longitude: {
+            type: mongoose.Schema.Types.Number,
+            require: false
+        }
+    },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
